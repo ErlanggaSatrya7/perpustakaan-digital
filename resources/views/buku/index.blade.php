@@ -117,7 +117,7 @@
         </div>
         <ul>
             @foreach($bukus as $buku)
-                <li>{!! data_get($buku, 'judul') !!}</li>
+                <li>{{ data_get($buku, 'judul') }}</li>
             @endforeach
         </ul>
     </div>
