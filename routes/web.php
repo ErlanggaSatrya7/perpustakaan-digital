@@ -125,10 +125,9 @@ Route::middleware('auth')->group(function () {
     // A2 (SOAL 2b): query sudah memakai binding di BukuController::cari()
     Route::get('/buku-cari', [BukuController::class, 'cari'])->name('buku.cari');
 
-    // A3 (SOAL 2c): route GET /buku/{buku}/hapus DIHAPUS (rentan CSRF).
-    // Diganti route DELETE, hanya bisa dipanggil lewat form dengan @csrf + @method('DELETE').
+    // A3 (SOAL 2c & SOAL 3): route DELETE diproteksi Gate can:kelola-buku
     Route::delete('/buku/{buku}', [BukuController::class, 'destroy'])
-        ->middleware('permission:kelola data buku')
+        ->middleware('can:kelola-buku')
         ->name('buku.destroy');
 
     // A4 (SOAL 4 akan menutup celah ini dengan Policy)

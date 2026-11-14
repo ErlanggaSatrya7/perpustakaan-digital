@@ -15,7 +15,7 @@
     <div id="alert-box" class="alert" style="display: none;"></div>
 
 
-    @can('kelola data buku')
+    @can('kelola-buku')
     <div class="crud-card form-card">
         <div class="crud-card-header">
             <div>
@@ -127,7 +127,7 @@
 @push('scripts')
     <script>
         window.daftarBukuCache = @json($bukus);
-        window.bolehKelolaBuku = @json(auth()->user()->can('kelola data buku'));
+        window.bolehKelolaBuku = @json(auth()->user()->can('kelola-buku'));
         window.bolehPinjamBuku = @json(auth()->user()->can('mengajukan peminjaman buku'));
         window.apiBukuUrl = @json(url('/api/buku'));
         window.apiPeminjamanUrl = @json(url('/api/peminjaman'));

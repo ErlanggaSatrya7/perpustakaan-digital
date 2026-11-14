@@ -21,18 +21,18 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Menambahkan buku
     Route::post('/buku', [BukuController::class, 'store'])
-        ->middleware('permission:kelola data buku');
+        ->middleware('can:kelola-buku');
 
     // Mengubah buku
     Route::put('/buku/{buku}', [BukuController::class, 'update'])
-        ->middleware('permission:kelola data buku');
+        ->middleware('can:kelola-buku');
 
     Route::patch('/buku/{buku}', [BukuController::class, 'update'])
-        ->middleware('permission:kelola data buku');
+        ->middleware('can:kelola-buku');
 
     // Menghapus buku
     Route::delete('/buku/{buku}', [BukuController::class, 'destroy'])
-        ->middleware('permission:kelola data buku');
+        ->middleware('can:kelola-buku');
 
 
     // ==================================
