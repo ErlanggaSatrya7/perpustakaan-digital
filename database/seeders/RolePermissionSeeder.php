@@ -92,12 +92,12 @@ class RolePermissionSeeder extends Seeder
         // Membersihkan cache kembali
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Akun default untuk pengujian RBAC
+        // Akun default untuk pengujian RBAC (Soal 5: password admin diperkuat)
         $daftarAkun = [
             [
                 'name' => 'Admin Perpustakaan',
                 'email' => 'admin@perpustakaan.com',
-                'password' => \Illuminate\Support\Facades\Hash::make('password123'),
+                'password' => \Illuminate\Support\Facades\Hash::make('AdminPerpus#2026!Secured'),
                 'role' => 'admin',
                 'telepon' => '081234567890',
             ],
