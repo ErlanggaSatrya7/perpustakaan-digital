@@ -51,11 +51,14 @@ class PeminjamanWebController extends Controller
     }
 
     /**
-     * Celah A4: Menampilkan detail peminjaman tanpa pemeriksaan kepemilikan (IDOR vulnerable).
+     * Soal 4: Menampilkan detail peminjaman dengan otorisasi Policy (Menutup IDOR).
      */
     public function show($id)
     {
         $peminjaman = Peminjaman::with(['anggota', 'buku.kategori'])->findOrFail($id);
+
+        // Otorisasi via Gate/Policy: view
+        \Illuminate\Support\Facades\Gate::authorize('view', $peminjaman);
 
         return view('peminjaman.show', compact('peminjaman'));
     }
