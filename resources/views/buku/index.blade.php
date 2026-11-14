@@ -97,20 +97,36 @@
                     </tr>
                 </thead>
                 <tbody id="tabel-buku-body">
+                    {{-- Data dirender oleh buku.js menggunakan window.daftarBukuCache --}}
                     <tr>
-                        <td colspan="6" class="text-center py-4">
-                            <span class="spinner"></span> Memuat data buku dari API...
-                        </td>
+                        <td colspan="6" class="text-center py-4 text-muted">Memuat data buku...</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
+    {{-- ============================================================
+         SOAL 1 (A1) - SENGAJA RENTAN XSS
+         Judul ditampilkan dengan {!! !!} (tanpa escaping).
+         Akan ditambal pada Soal 2(a) menjadi {{ }}.
+         ============================================================ --}}
+    <div class="crud-card">
+        <div class="crud-card-header">
+            <h3>Daftar Judul Buku (Blade)</h3>
+        </div>
+        <ul>
+            @foreach($bukus as $buku)
+                <li>{!! data_get($buku, 'judul') !!}</li>
+            @endforeach
+        </ul>
+    </div>
+
 @endsection
 
 @push('scripts')
     <script>
+        window.daftarBukuCache = @json($bukus);
         window.bolehKelolaBuku = @json(auth()->user()->can('kelola data buku'));
         window.bolehPinjamBuku = @json(auth()->user()->can('mengajukan peminjaman buku'));
         window.apiBukuUrl = @json(url('/api/buku'));

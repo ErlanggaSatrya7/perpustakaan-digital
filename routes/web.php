@@ -118,11 +118,24 @@ Route::middleware([
     Route::post('/peminjaman-saya/kembalikan/{id}', [PeminjamanWebController::class, 'ajukanPengembalian'])->name('peminjaman.saya.kembalikan');
 });
 
-// Detail peminjaman dengan Identity-Based Check (Skenario 14)
-Route::middleware([
-    'auth',
-    'permission:melihat status peminjaman sendiri'
-])->group(function () {
+// ==========================================
+// MODUL VI
+// ==========================================
+Route::middleware('auth')->group(function () {
+    // A2 (SOAL 2b): query sudah memakai binding di BukuController::cari()
+    Route::get('/buku-cari', [BukuController::class, 'cari'])->name('buku.cari');
+
+    // A3 (SOAL 2c): route GET /buku/{buku}/hapus DIHAPUS (rentan CSRF).
+    // Diganti route DELETE, hanya bisa dipanggil lewat form dengan @csrf + @method('DELETE').
+    // Soal 3 nanti: ganti 'permission:kelola data buku' menjadi 'can:kelola-buku'.
+    Route::delete('/buku/{buku}', [BukuController::class, 'destroy'])
+        ->middleware('permission:kelola data buku')
+        ->name('buku.destroy');
+    Route::get('/buku/{buku}/hapus', [BukuController::class, 'destroy'])
+        ->middleware('permission:kelola data buku')
+        ->name('buku.destroy');
+
+    // A4 (SOAL 4 akan menutup celah ini dengan Policy)
     Route::get('/peminjaman/{id}', [PeminjamanWebController::class, 'show'])->name('peminjaman.show');
 });
 
@@ -148,6 +161,8 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
+
+    
 });
 
 // Route autentikasi Breeze

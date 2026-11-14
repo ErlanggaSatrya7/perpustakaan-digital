@@ -64,93 +64,7 @@ async function tampilkanBuku() {
         const dataBuku = hasil.data ?? hasil;
 
         daftarBukuCache = Array.isArray(dataBuku) ? dataBuku : [];
-        tbody.innerHTML = '';
-
-        if (daftarBukuCache.length === 0) {
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="6" class="text-center py-4 text-muted">
-                        Belum ada koleksi buku yang tersedia.
-                    </td>
-                </tr>
-            `;
-            return;
-        }
-
-        daftarBukuCache.forEach((item, index) => {
-            const tr = document.createElement('tr');
-
-            const tdNo = document.createElement('td');
-            tdNo.textContent = index + 1;
-
-            const tdJudul = document.createElement('td');
-            const strong = document.createElement('strong');
-            strong.textContent = item.judul ?? '-';
-            tdJudul.appendChild(strong);
-
-            const tdKategori = document.createElement('td');
-            const spanKategori = document.createElement('span');
-            spanKategori.className = 'badge-kategori';
-            spanKategori.textContent = typeof item.kategori === 'object' && item.kategori !== null 
-                ? (item.kategori.nama ?? '-') 
-                : (item.kategori ?? '-');
-            tdKategori.appendChild(spanKategori);
-
-            const tdPenulis = document.createElement('td');
-            tdPenulis.textContent = item.penulis ?? '-';
-
-            const tdTahun = document.createElement('td');
-            tdTahun.textContent = item.tahun_terbit ?? '-';
-
-            const tdAksi = document.createElement('td');
-            tdAksi.className = 'action-cell';
-
-            // Tombol Detail untuk semua pengguna
-            const btnDetail = document.createElement('a');
-            btnDetail.href = `/buku/${item.id}`;
-            btnDetail.className = 'btn-detail';
-            btnDetail.textContent = 'Detail';
-            btnDetail.style.marginRight = '6px';
-            btnDetail.style.padding = '4px 8px';
-            btnDetail.style.fontSize = '12px';
-            btnDetail.style.backgroundColor = '#e0e7ff';
-            btnDetail.style.color = '#3730a3';
-            btnDetail.style.borderRadius = '4px';
-            btnDetail.style.textDecoration = 'none';
-            btnDetail.style.display = 'inline-block';
-            tdAksi.appendChild(btnDetail);
-
-            // ADMIN & PETUGAS: Ubah & Hapus
-            if (window.bolehKelolaBuku) {
-                const btnUbah = document.createElement('button');
-                btnUbah.type = 'button';
-                btnUbah.className = 'btn-edit';
-                btnUbah.textContent = 'Ubah';
-                btnUbah.onclick = () => isiFormUbah(item.id);
-
-                const btnHapus = document.createElement('button');
-                btnHapus.type = 'button';
-                btnHapus.className = 'btn-delete';
-                btnHapus.textContent = 'Hapus';
-                btnHapus.onclick = () => hapusBuku(item.id, item.judul ?? 'Buku ini');
-
-                tdAksi.append(btnUbah, btnHapus);
-            }
-            // SISWA: Pinjam Buku
-            else if (window.bolehPinjamBuku) {
-                const btnPinjam = document.createElement('button');
-                btnPinjam.type = 'button';
-                btnPinjam.className = 'btn-edit';
-                btnPinjam.style.backgroundColor = '#059669';
-                btnPinjam.textContent = 'Pinjam';
-                btnPinjam.onclick = () => pinjamBuku(item.id, item.judul ?? 'Buku ini');
-
-                tdAksi.appendChild(btnPinjam);
-            }
-
-            tr.append(tdNo, tdJudul, tdKategori, tdPenulis, tdTahun, tdAksi);
-            tbody.appendChild(tr);
-        });
+        renderTabelBuku(daftarBukuCache);
 
     } catch (error) {
         tbody.innerHTML = `
@@ -421,8 +335,108 @@ function escapeHtml(text) {
         .replace(/'/g, '&#039;');
 }
 
+// Inisialisasi: gunakan data SSR jika tersedia, fallback ke fetch API
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', tampilkanBuku);
+    document.addEventListener('DOMContentLoaded', inisialisasiBuku);
 } else {
-    tampilkanBuku();
+    inisialisasiBuku();
+}
+
+function inisialisasiBuku() {
+    if (window.daftarBukuCache && Array.isArray(window.daftarBukuCache) && window.daftarBukuCache.length > 0) {
+        // Data tersedia dari server-side render — render langsung tanpa fetch
+        daftarBukuCache = window.daftarBukuCache;
+        renderTabelBuku(daftarBukuCache);
+    } else {
+        // Fallback: ambil data dari API
+        tampilkanBuku();
+    }
+}
+
+function renderTabelBuku(data) {
+    const tbody = document.getElementById('tabel-buku-body');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    if (!data || data.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="6" class="text-center py-4 text-muted">
+                    Belum ada koleksi buku yang tersedia.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    data.forEach((item, index) => {
+        const tr = document.createElement('tr');
+
+        const tdNo = document.createElement('td');
+        tdNo.textContent = index + 1;
+
+        const tdJudul = document.createElement('td');
+        const strong = document.createElement('strong');
+        strong.textContent = item.judul ?? '-';
+        tdJudul.appendChild(strong);
+
+        const tdKategori = document.createElement('td');
+        const spanKategori = document.createElement('span');
+        spanKategori.className = 'badge-kategori';
+        spanKategori.textContent = typeof item.kategori === 'object' && item.kategori !== null
+            ? (item.kategori.nama ?? '-')
+            : (item.kategori ?? '-');
+        tdKategori.appendChild(spanKategori);
+
+        const tdPenulis = document.createElement('td');
+        tdPenulis.textContent = item.penulis ?? '-';
+
+        const tdTahun = document.createElement('td');
+        tdTahun.textContent = item.tahun_terbit ?? '-';
+
+        const tdAksi = document.createElement('td');
+        tdAksi.className = 'action-cell';
+
+        const btnDetail = document.createElement('a');
+        btnDetail.href = `/buku/${item.id}`;
+        btnDetail.className = 'btn-detail';
+        btnDetail.textContent = 'Detail';
+        btnDetail.style.marginRight = '6px';
+        btnDetail.style.padding = '4px 8px';
+        btnDetail.style.fontSize = '12px';
+        btnDetail.style.backgroundColor = '#e0e7ff';
+        btnDetail.style.color = '#3730a3';
+        btnDetail.style.borderRadius = '4px';
+        btnDetail.style.textDecoration = 'none';
+        btnDetail.style.display = 'inline-block';
+        tdAksi.appendChild(btnDetail);
+
+        if (window.bolehKelolaBuku) {
+            const btnUbah = document.createElement('button');
+            btnUbah.type = 'button';
+            btnUbah.className = 'btn-edit';
+            btnUbah.textContent = 'Ubah';
+            btnUbah.onclick = () => isiFormUbah(item.id);
+
+            const btnHapus = document.createElement('button');
+            btnHapus.type = 'button';
+            btnHapus.className = 'btn-delete';
+            btnHapus.textContent = 'Hapus';
+            btnHapus.onclick = () => hapusBuku(item.id, item.judul ?? 'Buku ini');
+
+            tdAksi.append(btnUbah, btnHapus);
+        } else if (window.bolehPinjamBuku) {
+            const btnPinjam = document.createElement('button');
+            btnPinjam.type = 'button';
+            btnPinjam.className = 'btn-edit';
+            btnPinjam.style.backgroundColor = '#059669';
+            btnPinjam.textContent = 'Pinjam';
+            btnPinjam.onclick = () => pinjamBuku(item.id, item.judul ?? 'Buku ini');
+            tdAksi.appendChild(btnPinjam);
+        }
+
+        tr.append(tdNo, tdJudul, tdKategori, tdPenulis, tdTahun, tdAksi);
+        tbody.appendChild(tr);
+    });
 }

@@ -51,21 +51,11 @@ class PeminjamanWebController extends Controller
     }
 
     /**
-     * Menampilkan detail peminjaman dengan Identity-Based Check (Skenario 14).
+     * Celah A4: Menampilkan detail peminjaman tanpa pemeriksaan kepemilikan (IDOR vulnerable).
      */
     public function show($id)
     {
         $peminjaman = Peminjaman::with(['anggota', 'buku.kategori'])->findOrFail($id);
-        $user = auth()->user();
-
-        // Pemeriksaan identitas jika pengguna adalah Siswa
-        if ($user->hasRole('siswa')) {
-            $anggota = $this->getAnggotaLogin();
-
-            if ($peminjaman->anggota_id !== $anggota->id) {
-                abort(403, 'Akses ditolak. Anda tidak diperbolehkan melihat riwayat peminjaman siswa lain.');
-            }
-        }
 
         return view('peminjaman.show', compact('peminjaman'));
     }
