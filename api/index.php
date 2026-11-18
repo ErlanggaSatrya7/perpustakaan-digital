@@ -1,9 +1,6 @@
 
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Contracts\Http\Kernel;
-
 define('LARAVEL_START', microtime(true));
 
 $root = dirname(__DIR__);
@@ -12,7 +9,6 @@ require $root . '/vendor/autoload.php';
 
 $app = require $root . '/bootstrap/app.php';
 
-// Gunakan direktori sementara Vercel
 $storage = '/tmp/laravel-storage';
 
 $directories = [
@@ -30,13 +26,6 @@ foreach ($directories as $directory) {
 
 $app->useStoragePath($storage);
 
-// Jalankan Laravel HTTP Kernel secara manual
-$kernel = $app->make(Kernel::class);
-
-$request = Request::capture();
-
-$response = $kernel->handle($request);
-
-$response->send();
-
-$kernel->terminate($request, $response);
+$app->handleRequest(
+    Illuminate\Http\Request::capture()
+);
