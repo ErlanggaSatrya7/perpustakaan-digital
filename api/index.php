@@ -1,22 +1,25 @@
 
 <?php
 
-header('Content-Type: text/plain; charset=utf-8');
-
-echo "STEP 1: PHP FUNCTION OK\n";
+ini_set('display_errors', '1');
+error_reporting(E_ALL);
 
 try {
     require __DIR__ . '/../vendor/autoload.php';
-    echo "STEP 2: COMPOSER AUTOLOAD OK\n";
 
-    $app = require __DIR__ . '/../bootstrap/app.php';
-    echo "STEP 3: LARAVEL BOOTSTRAP OK\n";
+    $app = require_once __DIR__ . '/../bootstrap/app.php';
 
-    echo "STEP 4: LARAVEL VERSION " . $app->version() . "\n";
+    $app->handleRequest(
+        Illuminate\Http\Request::capture()
+    );
 
 } catch (\Throwable $e) {
-    echo "\nERROR: " . get_class($e) . "\n";
-    echo "MESSAGE: " . $e->getMessage() . "\n";
-    echo "FILE: " . $e->getFile() . "\n";
-    echo "LINE: " . $e->getLine() . "\n";
+    http_response_code(500);
+    header('Content-Type: text/plain; charset=UTF-8');
+
+    echo "LARAVEL REQUEST ERROR\n";
+    echo "Class: " . get_class($e) . "\n";
+    echo "Message: " . $e->getMessage() . "\n";
+    echo "File: " . $e->getFile() . "\n";
+    echo "Line: " . $e->getLine() . "\n";
 }
