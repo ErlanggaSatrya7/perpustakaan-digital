@@ -1,5 +1,3 @@
 <?php
 
-header('Content-Type: text/plain; charset=utf-8');
-
-echo 'PHP VERCEL BERHASIL';
+require __DIR__ . '/../public/index.php';
