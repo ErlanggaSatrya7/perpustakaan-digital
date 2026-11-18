@@ -27,7 +27,8 @@ foreach ([
 
 $app->useStoragePath($storage);
 
-// Force HTTPS karena Vercel proxy internal pakai HTTP
-Illuminate\Support\Facades\URL::forceScheme('https');
+// Force HTTPS — Vercel proxy internal pakai HTTP, tapi user akses via HTTPS
+$_SERVER['HTTPS'] = 'on';
+$_SERVER['SERVER_PORT'] = 443;
 
 $app->handleRequest(Illuminate\Http\Request::capture());
