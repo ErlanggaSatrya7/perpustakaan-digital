@@ -1,50 +1,42 @@
 
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+use Illuminate\Http\Request;
+use Illuminate\Contracts\Http\Kernel;
+
+define('LARAVEL_START', microtime(true));
 
 $root = dirname(__DIR__);
 
-ob_start();
+require $root . '/vendor/autoload.php';
 
-try {
-    require $root . '/vendor/autoload.php';
+$app = require $root . '/bootstrap/app.php';
 
-    $app = require $root . '/bootstrap/app.php';
+// Gunakan direktori sementara Vercel
+$storage = '/tmp/laravel-storage';
 
-    $kernel = $app->make(
-        Illuminate\Contracts\Http\Kernel::class
-    );
+$directories = [
+    $storage . '/framework/cache/data',
+    $storage . '/framework/sessions',
+    $storage . '/framework/views',
+    $storage . '/logs',
+];
 
-    $request = Illuminate\Http\Request::capture();
-
-    $response = $kernel->handle($request);
-
-    $status = $response->getStatusCode();
-    $body = $response->getContent();
-
-    $kernel->terminate($request, $response);
-
-    ob_end_clean();
-
-    header('Content-Type: text/plain; charset=utf-8');
-
-    echo "ENTRYPOINT DIAGNOSTIC\n";
-    echo "REQUEST URI: " . $request->getRequestUri() . "\n";
-    echo "STATUS: " . $status . "\n";
-    echo "BODY LENGTH: " . strlen($body) . "\n";
-    echo "BODY PREVIEW:\n";
-    echo substr(strip_tags($body), 0, 500);
-
-} catch (Throwable $e) {
-    ob_end_clean();
-
-    http_response_code(500);
-    header('Content-Type: text/plain; charset=utf-8');
-
-    echo "ERROR: " . get_class($e) . "\n";
-    echo "MESSAGE: " . $e->getMessage() . "\n";
-    echo "FILE: " . $e->getFile() . "\n";
-    echo "LINE: " . $e->getLine() . "\n";
+foreach ($directories as $directory) {
+    if (!is_dir($directory)) {
+        mkdir($directory, 0755, true);
+    }
 }
+
+$app->useStoragePath($storage);
+
+// Jalankan Laravel HTTP Kernel secara manual
+$kernel = $app->make(Kernel::class);
+
+$request = Request::capture();
+
+$response = $kernel->handle($request);
+
+$response->send();
+
+$kernel->terminate($request, $response);
