@@ -1,26 +1,26 @@
-
 <?php
 
-header('Content-Type: text/plain; charset=utf-8');
+error_reporting(E_ALL);
+ini_set("display_errors", "1");
 
-echo "=== VERCEL LARAVEL PATH DIAGNOSTIC ===\n\n";
+header("Content-Type: text/plain; charset=utf-8");
 
-echo "PHP VERSION: " . PHP_VERSION . "\n";
-echo "__DIR__: " . __DIR__ . "\n";
-echo "GETCWD: " . getcwd() . "\n\n";
+echo "STEP 1: PHP RUNTIME OK\n";
 
-$paths = [
-    'Project Root' => dirname(__DIR__),
-    'Public Index' => dirname(__DIR__) . '/public/index.php',
-    'Composer Autoload' => dirname(__DIR__) . '/vendor/autoload.php',
-    'Bootstrap App' => dirname(__DIR__) . '/bootstrap/app.php',
-    'Routes Web' => dirname(__DIR__) . '/routes/web.php',
-    'Storage' => dirname(__DIR__) . '/storage',
-];
+try {
+    $root = dirname(__DIR__);
 
-foreach ($paths as $label => $path) {
-    echo $label . ":\n";
-    echo "PATH: " . $path . "\n";
-    echo "EXISTS: " . (file_exists($path) ? 'YES' : 'NO') . "\n";
-    echo "REALPATH: " . (realpath($path) ?: 'NOT FOUND') . "\n\n";
+    require $root . "/vendor/autoload.php";
+    echo "STEP 2: COMPOSER AUTOLOAD OK\n";
+
+    $app = require $root . "/bootstrap/app.php";
+    echo "STEP 3: LARAVEL BOOTSTRAP OK\n";
+
+    echo "STEP 4: LARAVEL VERSION " . $app->version() . "\n";
+} catch (Throwable $e) {
+    echo "\nBOOTSTRAP ERROR\n";
+    echo "TYPE: " . get_class($e) . "\n";
+    echo "MESSAGE: " . $e->getMessage() . "\n";
+    echo "FILE: " . $e->getFile() . "\n";
+    echo "LINE: " . $e->getLine() . "\n";
 }
