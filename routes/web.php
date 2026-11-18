@@ -162,3 +162,11 @@ Route::middleware('auth')->group(function () {
 
 // Route autentikasi Breeze
 require __DIR__.'/auth.php';
+Route::get('/diagnostic', function () {
+    return response()->json([
+        'status' => 'Laravel is running',
+        'app' => app()->version(),
+        'environment' => app()->environment(),
+        'database' => config('database.default'),
+    ]);
+});
