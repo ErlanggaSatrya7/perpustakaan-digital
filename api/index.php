@@ -1,19 +1,22 @@
 
 <?php
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+header('Content-Type: text/plain; charset=utf-8');
+
+echo "STEP 1: PHP FUNCTION OK\n";
 
 try {
-    require __DIR__ . '/../public/index.php';
-} catch (\Throwable $e) {
-    http_response_code(500);
+    require __DIR__ . '/../vendor/autoload.php';
+    echo "STEP 2: COMPOSER AUTOLOAD OK\n";
 
-    echo '<pre>';
-    echo 'ERROR CLASS: ' . get_class($e) . "\n";
-    echo 'ERROR MESSAGE: ' . $e->getMessage() . "\n";
-    echo 'FILE: ' . $e->getFile() . "\n";
-    echo 'LINE: ' . $e->getLine() . "\n";
-    echo '</pre>';
+    $app = require __DIR__ . '/../bootstrap/app.php';
+    echo "STEP 3: LARAVEL BOOTSTRAP OK\n";
+
+    echo "STEP 4: LARAVEL VERSION " . $app->version() . "\n";
+
+} catch (\Throwable $e) {
+    echo "\nERROR: " . get_class($e) . "\n";
+    echo "MESSAGE: " . $e->getMessage() . "\n";
+    echo "FILE: " . $e->getFile() . "\n";
+    echo "LINE: " . $e->getLine() . "\n";
 }
