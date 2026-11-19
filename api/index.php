@@ -27,8 +27,14 @@ foreach ([
 
 $app->useStoragePath($storage);
 
-// Force HTTPS — Vercel proxy internal pakai HTTP, tapi user akses via HTTPS
+// Force HTTPS — Vercel proxy internal pakai HTTP
 $_SERVER['HTTPS'] = 'on';
 $_SERVER['SERVER_PORT'] = 443;
+
+// Fix: Laravel jalan dari api/index.php, tapi harus pura-pura dari /index.php
+// supaya url() helper tidak strip /api/ prefix dari URL
+$_SERVER['SCRIPT_NAME'] = '/index.php';
+$_SERVER['SCRIPT_FILENAME'] = $root . '/public/index.php';
+$_SERVER['PHP_SELF'] = '/index.php';
 
 $app->handleRequest(Illuminate\Http\Request::capture());
