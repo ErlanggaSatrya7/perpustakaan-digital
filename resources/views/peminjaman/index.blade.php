@@ -25,22 +25,22 @@
 
     <!-- Filter Status -->
     <div class="mb-6 flex flex-wrap gap-2">
-        <a href="{{ route('peminjaman.index') }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold {{ !request('status') ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200' }}">
+        <a href="{{ route('peminjaman.index') }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold {{ !request('status') ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600' }}">
             Semua
         </a>
-        <a href="{{ route('peminjaman.index', ['status' => 'diajukan']) }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold {{ request('status') === 'diajukan' ? 'bg-amber-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200' }}">
+        <a href="{{ route('peminjaman.index', ['status' => 'diajukan']) }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold {{ request('status') === 'diajukan' ? 'bg-amber-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600' }}">
             Diajukan
         </a>
-        <a href="{{ route('peminjaman.index', ['status' => 'dipinjam']) }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold {{ request('status') === 'dipinjam' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200' }}">
+        <a href="{{ route('peminjaman.index', ['status' => 'dipinjam']) }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold {{ request('status') === 'dipinjam' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600' }}">
             Dipinjam
         </a>
-        <a href="{{ route('peminjaman.index', ['status' => 'menunggu_pengembalian']) }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold {{ request('status') === 'menunggu_pengembalian' ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200' }}">
+        <a href="{{ route('peminjaman.index', ['status' => 'menunggu_pengembalian']) }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold {{ request('status') === 'menunggu_pengembalian' ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600' }}">
             Menunggu Pengembalian
         </a>
-        <a href="{{ route('peminjaman.index', ['status' => 'dikembalikan']) }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold {{ request('status') === 'dikembalikan' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200' }}">
+        <a href="{{ route('peminjaman.index', ['status' => 'dikembalikan']) }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold {{ request('status') === 'dikembalikan' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600' }}">
             Dikembalikan
         </a>
-        <a href="{{ route('peminjaman.index', ['status' => 'ditolak']) }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold {{ request('status') === 'ditolak' ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200' }}">
+        <a href="{{ route('peminjaman.index', ['status' => 'ditolak']) }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold {{ request('status') === 'ditolak' ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600' }}">
             Ditolak
         </a>
     </div>
@@ -60,7 +60,7 @@
             </thead>
             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 @forelse($peminjamans as $index => $item)
-                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-750">
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                             {{ $peminjamans->firstItem() + $index }}
                         </td>
