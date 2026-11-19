@@ -36,6 +36,10 @@
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
             padding: 1.5rem;
             border: 1px solid #f3f4f6;
+            color: #1f2937;
+        }
+        .crud-card ul {
+            color: #1f2937;
         }
         .crud-card-header {
             display: flex;
@@ -49,6 +53,43 @@
             font-size: 1.125rem;
             font-weight: 700;
             color: #1f2937;
+        }
+        @media (prefers-color-scheme: dark) {
+            .page-title h2 { color: #f3f4f6; }
+            .page-title p { color: #9ca3af; }
+            .crud-card {
+                background: #1f2937;
+                border-color: #374151;
+                color: #f3f4f6;
+            }
+            .crud-card ul { color: #f3f4f6; }
+            .crud-card-header {
+                border-bottom-color: #374151;
+            }
+            .crud-card-header h3 { color: #f3f4f6; }
+            .form-group label { color: #d1d5db; }
+            .form-control {
+                background: #374151;
+                border-color: #4b5563;
+                color: #f3f4f6;
+            }
+            .data-table th {
+                background-color: #374151;
+                color: #d1d5db;
+                border-bottom-color: #4b5563;
+            }
+            .data-table td {
+                color: #f3f4f6;
+                border-bottom-color: #374151;
+            }
+            .data-table tr:hover { background-color: #374151; }
+            .badge-kategori {
+                background: #374151;
+                color: #d1d5db;
+            }
+            .btn-secondary { background: #374151; color: #d1d5db; }
+            .btn-outline { border-color: #4b5563; color: #d1d5db; }
+            .btn-outline:hover { background: #374151; }
         }
         .badge-pill {
             display: inline-block;
