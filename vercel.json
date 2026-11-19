@@ -31,6 +31,7 @@
     "VIEW_COMPILED_PATH": "/tmp/views",
     "CACHE_STORE": "array",
     "SESSION_DRIVER": "cookie",
+    "SANCTUM_STATEFUL_DOMAINS": "perpustakaan-digital-seven-ivory.vercel.app,perpustakaan-digital-git-main-erlangga-satrya-s-projects.vercel.app",
     "APP_DEBUG": "true",
     "APP_ENV": "local"
   }
