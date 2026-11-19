@@ -13,6 +13,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
+        /* ===== LIGHT MODE (default) ===== */
         .page-title {
             max-width: 80rem;
             margin: 1.5rem auto 1rem;
@@ -38,7 +39,8 @@
             border: 1px solid #f3f4f6;
             color: #1f2937;
         }
-        .crud-card ul {
+        .crud-card ul,
+        .crud-card li {
             color: #1f2937;
         }
         .crud-card-header {
@@ -54,42 +56,8 @@
             font-weight: 700;
             color: #1f2937;
         }
-        @media (prefers-color-scheme: dark) {
-            .page-title h2 { color: #f3f4f6; }
-            .page-title p { color: #9ca3af; }
-            .crud-card {
-                background: #1f2937;
-                border-color: #374151;
-                color: #f3f4f6;
-            }
-            .crud-card ul { color: #f3f4f6; }
-            .crud-card-header {
-                border-bottom-color: #374151;
-            }
-            .crud-card-header h3 { color: #f3f4f6; }
-            .form-group label { color: #d1d5db; }
-            .form-control {
-                background: #374151;
-                border-color: #4b5563;
-                color: #f3f4f6;
-            }
-            .data-table th {
-                background-color: #374151;
-                color: #d1d5db;
-                border-bottom-color: #4b5563;
-            }
-            .data-table td {
-                color: #f3f4f6;
-                border-bottom-color: #374151;
-            }
-            .data-table tr:hover { background-color: #374151; }
-            .badge-kategori {
-                background: #374151;
-                color: #d1d5db;
-            }
-            .btn-secondary { background: #374151; color: #d1d5db; }
-            .btn-outline { border-color: #4b5563; color: #d1d5db; }
-            .btn-outline:hover { background: #374151; }
+        .crud-card-header small {
+            color: #6b7280;
         }
         .badge-pill {
             display: inline-block;
@@ -123,6 +91,8 @@
             box-sizing: border-box;
             outline: none;
             transition: border-color 0.15s ease;
+            background: #ffffff;
+            color: #1f2937;
         }
         .form-control:focus {
             border-color: #6366f1;
@@ -175,6 +145,9 @@
             border-bottom: 1px solid #f3f4f6;
             color: #1f2937;
         }
+        .data-table td strong {
+            color: #1f2937;
+        }
         .data-table tr:hover { background-color: #f9fafb; }
         .badge-kategori {
             display: inline-block;
@@ -217,6 +190,55 @@
         }
         .alert-success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
         .alert-danger { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
+        /* ===== DARK MODE — HARUS DI PALING BAWAH ===== */
+        @media (prefers-color-scheme: dark) {
+            .page-title h2 { color: #f3f4f6; }
+            .page-title p { color: #9ca3af; }
+            .crud-card {
+                background: #1f2937;
+                border-color: #374151;
+                color: #f3f4f6;
+            }
+            .crud-card ul,
+            .crud-card li {
+                color: #f3f4f6;
+            }
+            .crud-card-header {
+                border-bottom-color: #374151;
+            }
+            .crud-card-header h3 { color: #f3f4f6; }
+            .crud-card-header small { color: #9ca3af; }
+            .form-group label { color: #d1d5db; }
+            .form-control {
+                background: #374151;
+                border-color: #4b5563;
+                color: #f3f4f6;
+            }
+            .data-table th {
+                background-color: #374151;
+                color: #d1d5db;
+                border-bottom-color: #4b5563;
+            }
+            .data-table td {
+                color: #f3f4f6;
+                border-bottom-color: #374151;
+            }
+            .data-table td strong {
+                color: #f3f4f6;
+            }
+            .data-table tr:hover { background-color: #374151; }
+            .badge-kategori {
+                background: #374151;
+                color: #d1d5db;
+            }
+            .btn-secondary { background: #374151; color: #d1d5db; }
+            .btn-secondary:hover { background: #4b5563; }
+            .btn-outline { border-color: #4b5563; color: #d1d5db; }
+            .btn-outline:hover { background: #374151; }
+            .alert-success { background: #064e3b; color: #a7f3d0; border-color: #065f46; }
+            .alert-danger { background: #7f1d1d; color: #fecaca; border-color: #991b1b; }
+        }
     </style>
 
     @stack('styles')
